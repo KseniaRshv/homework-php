@@ -1,4 +1,9 @@
-<?php
+ <?php
+
+// Домашнее задание к занятию «1.3. Базовые операторы и функции»
+// Задание 2: стандартизатор имени
+
+
 // Запрос данных от пользователя
 $lastname = trim(readline("Введите фамилию: "));
 $firstname = trim(readline("Введите имя: "));
@@ -27,3 +32,4 @@ $fio = mb_substr($lastname, 0, 1) . mb_substr($firstname, 0, 1) . mb_substr($mid
 echo "Полное имя: '$fullName'\n";
 echo "Фамилия и инициалы: '$surnameAndInitials'\n";
 echo "Аббревиатура: '$fio'\n";
+?>
