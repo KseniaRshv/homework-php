@@ -6,7 +6,7 @@
 function generateSchedule($year, $month, $monthsCount = 1) {
     $currentMonth = $month;
     $currentYear = $year;
-    $isWorkingDay = true; // Первое число месяца - рабочий день
+    $nextWorkingDay = 1; // Первый рабочий день
 
     for ($m = 0; $m < $monthsCount; $m++) {
         $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $currentMonth, $currentYear);
@@ -18,19 +18,20 @@ function generateSchedule($year, $month, $monthsCount = 1) {
             $date = mktime(0, 0, 0, $currentMonth, $day, $currentYear);
             $dayOfWeek = date('N', $date); // 1 (понедельник) - 7 (воскресенье)
 
-            if ($isWorkingDay) {
+            if ($day == $nextWorkingDay) {
                 // Если рабочий день выпадает на выходные, переносим на понедельник
-                if ($dayOfWeek == 6 || $dayOfWeek == 7) {
+                if ($dayOfWeek == 6) { // Суббота
                     echo "\033[31m$day (перенос на понедельник)\033[0m\n";
+                    $nextWorkingDay += 3; // Переносим на понедельник (через 3 дня)
+                } elseif ($dayOfWeek == 7) { // Воскресенье
+                    echo "\033[31m$day (перенос на понедельник)\033[0m\n";
+                    $nextWorkingDay += 2; // Переносим на понедельник (через 2 дня)
                 } else {
                     echo "\033[32m$day (рабочий)\033[0m\n";
+                    $nextWorkingDay += 3; // Следующий рабочий день через 3 дня
                 }
-                $isWorkingDay = false;
             } else {
                 echo "$day\n";
-                if ($dayOfWeek == 5) { // Если пятница, следующий рабочий день будет в понедельник
-                    $isWorkingDay = true;
-                }
             }
         }
 
@@ -42,5 +43,8 @@ function generateSchedule($year, $month, $monthsCount = 1) {
         }
     }
 }
+
+// Пример вызова функции
+generateSchedule(2025, 1, 3); // Сгенерируем расписание на январь, февраль и март 2025 года
 
 ?>
